@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  has_many :identities
+
+
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
 
@@ -26,7 +29,8 @@ class User < ActiveRecord::Base
       # Get the existing user by email if the provider gives us a verified email.
       # If no verified email was provided we assign a temporary email and ask the
       # user to verify it on the next step via UsersController.finish_signup
-      email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
+      # verify the email -  return email   --    facebook hash       linked in(not used here)      google oauth verified
+      email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email || auth.extra.raw_info.email_verified)
       email = auth.info.email if email_is_verified
       user = User.where(:email => email).first if email
 
@@ -34,7 +38,7 @@ class User < ActiveRecord::Base
       if user.nil?
         user = User.new(
           name: auth.extra.raw_info.name,
-          #username: auth.info.nickname || auth.uid,
+          #username: auth.info.nickname || auth.uid
           email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
           password: Devise.friendly_token[0,20]
         )
@@ -55,4 +59,3 @@ class User < ActiveRecord::Base
     self.email && self.email !~ TEMP_EMAIL_REGEX
   end
 end
-
