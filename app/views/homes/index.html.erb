@@ -1,0 +1,5 @@
+<% if current_user %>
+  <% User.pull_statuses(current_user).each do |m| %>
+    <%= m %>
+  <% end %>
+<% end %>
