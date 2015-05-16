@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :identities
 
+  has_many :user_bad_words
+  has_many :bad_words, through: :user_bad_words
 
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
