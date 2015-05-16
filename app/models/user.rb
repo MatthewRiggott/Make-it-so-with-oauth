@@ -58,13 +58,15 @@ class User < ActiveRecord::Base
   end
 
 
-  def self.pull_statuses(user)
-    status_feed = FbGraph2::User.new(user.facebook_id).authenticate(user.token)
-    messages = []
+  def pull_statuses
+    status_feed = FbGraph2::User.new(facebook_id).authenticate(token)
+    status_array = []
+    status_hash = {}
     status_feed.statuses.each do |s|
-      messages << s.message
+      status_hash = {timestamp: "#{s.updated_time}", status: "#{s.message}"}
+      status_array << status_hash
     end
-    messages
+    status_array
   end
 
   def email_verified?
