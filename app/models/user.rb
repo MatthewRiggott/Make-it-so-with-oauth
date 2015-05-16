@@ -59,9 +59,12 @@ class User < ActiveRecord::Base
 
 
   def self.pull_statuses(user)
-    binding.pry
-    status_feed = FbGraph2::User.new(user.id).authenticate(user.token)
-    status_feed.statuses 
+    status_feed = FbGraph2::User.new(user.facebook_id).authenticate(user.token)
+    messages = []
+    status_feed.statuses.each do |s|
+      messages << s.message
+    end
+    messages
   end
 
   def email_verified?
