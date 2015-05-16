@@ -5,7 +5,6 @@
 .row
   .small-12-columns
     = form_for @user_bad_words do |f|
-      = f.label :bad_word
-      = f.collection_select(:bad_word, :bad_word_id, BadWord.all, :id, :word)
-
+      = f.label :user_bad_word
+      = f.text
       = f.submit
