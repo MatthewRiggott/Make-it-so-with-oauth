@@ -39,7 +39,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem "coveralls", require: false
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  # gem 'spring'
 end
 
 gem 'pry-rails'
@@ -55,3 +55,4 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'foundation-rails'
+gem'fb_graph2'
