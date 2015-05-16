@@ -90,16 +90,20 @@ class User < ActiveRecord::Base
       bad_words.each do |bad_word|
         if word == bad_word
           self.shock
+          break
         end
       end
     end
   end
 
   def shock
-    beep = "https://pavlok.herokuapp.com/api/#{self.bracelet_id}/beep/4"
-    shock = "https://pavlok.herokuapp.com/api/#{self.bracelet_id}/shock/150"
-    open(beep)
-    open(shock)
+    # beep = "https://pavlok.herokuapp.com/api/#{self.bracelet_id}/beep/4"
+    light = "https://pavlok.herokuapp.com/api/#{self.bracelet_id}/led/4"
+    # shock = "https://pavlok.herokuapp.com/api/#{self.bracelet_id}/shock/150"
+
+    # open(beep)
+    open(light)
+    # open(shock)
   end
 
   def pull_statuses
