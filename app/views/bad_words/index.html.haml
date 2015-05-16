@@ -2,7 +2,7 @@
 
 - if @user_bad_words
   - @user_bad_words.each do |word|
-    = word
+    = word.bad_word.word
 
 = form_for @user_bad_word do |f|
   = f.label :bad_words
