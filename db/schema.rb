@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 20150516182222) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "bracelet_id"
+    t.string   "token"
+    t.string   "facebook_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

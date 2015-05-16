@@ -43,7 +43,6 @@ group :development, :test do
 end
 
 gem 'pry-rails'
-gem 'dotenv-rails', :groups => [:development, :test]
 gem 'rspec-rails', group: [:development, :test]
 gem 'capybara', group: [:development, :test]
 gem 'launchy', group: [:development, :test]
@@ -55,3 +54,5 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'foundation-rails'
+gem 'haml'
+gem 'fb_graph2'
