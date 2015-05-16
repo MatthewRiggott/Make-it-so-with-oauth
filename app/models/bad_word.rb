@@ -12,7 +12,6 @@ class BadWord < ActiveRecord::Base
   status_words.each do |word|
     user_bad_words.each do |bad_word|
       if word == bad_word
-        
         returns  1
         # place shock function here
         break
