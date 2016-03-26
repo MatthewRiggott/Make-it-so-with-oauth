@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   has_many :identities
 
+  has_many :user_bad_words
+  has_many :bad_words, through: :user_bad_words
 
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
@@ -30,8 +32,8 @@ class User < ActiveRecord::Base
       # If no verified email was provided we assign a temporary email and ask the
       # user to verify it on the next step via UsersController.finish_signup
       # verify the email -  return email   --    facebook hash       linked in(not used here)      google oauth verified
+
       email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email || auth.extra.raw_info.email_verified)
-      binding.pry
       email = auth.info.email if email_is_verified
       user = User.where(:email => email).first if email
 
@@ -39,9 +41,10 @@ class User < ActiveRecord::Base
       if user.nil?
         user = User.new(
           name: auth.extra.raw_info.name,
-          #username: auth.info.nickname || auth.uid
           email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0,20],
+          facebook_id: auth.uid,
+          token: auth.credentials.token
         )
         user.skip_confirmation!
         user.save!
@@ -54,6 +57,16 @@ class User < ActiveRecord::Base
       identity.save!
     end
     user
+  end
+
+
+  def self.pull_statuses(user)
+    status_feed = FbGraph2::User.new(user.facebook_id).authenticate(user.token)
+    messages = []
+    status_feed.statuses.each do |s|
+      messages << s.message
+    end
+    messages
   end
 
   def email_verified?
